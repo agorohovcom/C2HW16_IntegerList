@@ -1,9 +1,9 @@
 package integerlist;
 
-import exception.InvalidIntegerListInitialCapacityException;
 import exception.IntegerListElementNotFoundException;
 import exception.IntegerListIndexOutOfBoundsException;
 import exception.IntegerListNullPointerException;
+import exception.InvalidIntegerListInitialCapacityException;
 
 import java.util.Arrays;
 
@@ -178,5 +178,25 @@ public class IntegerListRealization implements IntegerList {
         if ((size * 2) < elementData.length) {
             elementData = Arrays.copyOf(elementData, size + DEFAULT_CAPACITY_VALUE);
         }
+    }
+
+    private void selectionSort() {
+        Integer[] array = toArray();
+        for (int i = 0; i < size - 1; i++) {
+            int minIdx = i;
+            for (int j = i + 1; j < size; j++) {
+                if (array[j] < array[minIdx]) {
+                    minIdx = j;
+                }
+            }
+            int tmp = array[minIdx];
+            array[minIdx] = array[i];
+            array[i] = tmp;
+        }
+        elementData = array;
+    }
+
+    private boolean binarySearch() {
+
     }
 }
