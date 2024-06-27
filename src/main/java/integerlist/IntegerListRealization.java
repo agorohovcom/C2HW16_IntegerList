@@ -180,24 +180,69 @@ public class IntegerListRealization implements IntegerList {
         }
     }
 
-    private Integer[] selectionSort() {
-        Integer[] result = Arrays.copyOf(elementData, size);
-        for (int i = 0; i < result.length - 1; i++) {
-            int minIdx = i;
-            for (int j = i + 1; j < result.length; j++) {
-                if (result[j] < result[minIdx]) {
-                    minIdx = j;
-                }
-            }
-            int tmp = result[minIdx];
-            result[minIdx] = result[i];
-            result[i] = tmp;
+//    private Integer[] selectionSort() {
+//        Integer[] result = Arrays.copyOf(elementData, size);
+//        for (int i = 0; i < result.length - 1; i++) {
+//            int minIdx = i;
+//            for (int j = i + 1; j < result.length; j++) {
+//                if (result[j] < result[minIdx]) {
+//                    minIdx = j;
+//                }
+//            }
+//            int tmp = result[minIdx];
+//            result[minIdx] = result[i];
+//            result[i] = tmp;
+//        }
+//        return result;
+//    }
+
+    private void mergeSort(Integer[] arr) {
+        if (arr.length < 2) {
+            return;
         }
-        return result;
+
+        int mid = arr.length / 2;
+        Integer[] left = new Integer[mid];
+        Integer[] right = new Integer[arr.length - mid];
+
+        for (int i = 0; i < left.length; i++) {
+            left[i] = arr[i];
+        }
+        for (int i = 0; i < right.length; i++) {
+            right[i] = arr[mid + i];
+        }
+
+        mergeSort(left);
+        mergeSort(right);
+
+        merge(arr, left, right);
+    }
+
+    private void merge(Integer[] arr, Integer[] left, Integer[] right) {
+        int mainP = 0;
+        int leftP = 0;
+        int rightP = 0;
+
+        while (leftP < left.length && rightP < right.length) {
+            if (left[leftP] <= right[rightP]) {
+                arr[mainP++] = left[leftP++];
+            } else {
+                arr[mainP++] = right[rightP++];
+            }
+        }
+
+        while (leftP < left.length) {
+            arr[mainP++] = left[leftP++];
+        }
+        while (rightP < right.length) {
+            arr[mainP++] = right[rightP++];
+        }
     }
 
     private boolean binarySearch(Integer item) {
-        Integer[] array = selectionSort();
+//        Integer[] array = selectionSort();
+        Integer[] array = Arrays.copyOf(elementData, size);
+        mergeSort(array);
 
         int left = 0;
         int right = array.length - 1;
