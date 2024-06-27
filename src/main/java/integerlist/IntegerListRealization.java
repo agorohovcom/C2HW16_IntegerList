@@ -1,9 +1,9 @@
 package integerlist;
 
-import exception.InvalidIntegerListInitialCapacityException;
 import exception.IntegerListElementNotFoundException;
 import exception.IntegerListIndexOutOfBoundsException;
 import exception.IntegerListNullPointerException;
+import exception.InvalidIntegerListInitialCapacityException;
 
 import java.util.Arrays;
 
@@ -92,7 +92,7 @@ public class IntegerListRealization implements IntegerList {
     @Override
     public boolean contains(Integer item) {
         notNullParamCheckPlease(item);
-        return Arrays.stream(elementData).limit(size).anyMatch(s -> s.equals(item));
+        return binarySearch(item);
     }
 
     @Override
@@ -178,5 +178,41 @@ public class IntegerListRealization implements IntegerList {
         if ((size * 2) < elementData.length) {
             elementData = Arrays.copyOf(elementData, size + DEFAULT_CAPACITY_VALUE);
         }
+    }
+
+    private Integer[] selectionSort() {
+        Integer[] result = Arrays.copyOf(elementData, size);
+        for (int i = 0; i < result.length - 1; i++) {
+            int minIdx = i;
+            for (int j = i + 1; j < result.length; j++) {
+                if (result[j] < result[minIdx]) {
+                    minIdx = j;
+                }
+            }
+            int tmp = result[minIdx];
+            result[minIdx] = result[i];
+            result[i] = tmp;
+        }
+        return result;
+    }
+
+    private boolean binarySearch(Integer item) {
+        Integer[] array = selectionSort();
+
+        int left = 0;
+        int right = array.length - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (array[mid].equals(item)) {
+                return true;
+            }
+            if (array[mid] > item) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return false;
     }
 }
